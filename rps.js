@@ -1,5 +1,47 @@
+const container = document.querySelector('#container');
+
+const button1 = document.createElement('button');
+const button2 = document.createElement('button');
+const button3 = document.createElement('button');
+
+const resultDiv = document.createElement('div');
+const points = document.createElement('div');
+const gameOverDiv = document.createElement('div');
+
+document.body.appendChild(resultDiv);
+document.body.appendChild(points);
+document.body.appendChild(gameOverDiv);
+
+rpsButtons = [button1 , button2, button3];
+
+let playerWins = 0;
+let playerLosses = 0;
+let playerTies = 0; 
+
+rpsButtons.forEach(button => {
+    button.classList.add("button");
+    container.appendChild(button);
+    button.addEventListener('click', () => {    //button clicks results in playround
+    resultDiv.textContent = playRound(button.innerText, getComputerChoice());
+    gameCounter();
+    gameOver();
+    });
+});
+
+
+button1.setAttribute('style', 'color: white; background: blue; font-size: 20px;');
+button2.setAttribute('style', 'color: white; background: red; font-size: 20px;');
+button3.setAttribute('style', 'color: white; background: black; font-size: 20px;');
+
+button1.textContent = "Rock";
+button2.textContent = "Paper";
+button3.textContent = "Scissors";
+
 
 choices = ['Rock', 'Paper', 'Scissors'];
+
+
+
 
 function random(number) {  //returns random number from 0 to 'number' parameter
     return(Math.floor(Math.random() * number))
@@ -47,33 +89,31 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    player_wins = 0
-    player_losses = 0
-    player_ties = 0
-    
-    for (let i = 0; i < 5; i++) {
-        playerSelection = prompt("Rock, Paper, Scissors?:");
-        computerSelection = getComputerChoice();
-        result = playRound(playerSelection, computerSelection);
-        console.log(result);
-        result_slice = result.slice(0,8);
+function gameCounter() {
+    result_slice = resultDiv.textContent.slice(0,8);
         if (result_slice === `You Win!`) {
-            player_wins += 1
+            playerWins += 1
         } else if (result_slice === `You Tied`){
-            player_ties += 1
+            playerTies += 1
         } else {
-            player_losses += 1
+            playerLosses += 1
         }
-    }
-    if (player_wins > player_losses) {
-        console.log("Winner: Player")
-    } else if (player_losses > player_wins) {
-        console.log("Winner: Computer")
-    } else {
-        console.log("Winner: Nobody")
-    }
-
+        points.textContent = `Player: ${playerWins} Computer: ${playerLosses} Draws: ${playerTies}`
 }
- game()
- 
+
+function gameOver(){
+    if (playerWins === 5){
+        gameOverDiv.textContent = "Congratulations: You Won!"
+        playerWins = 0;
+        playerLosses = 0;
+        playerTies = 0
+    }else if (playerLosses === 5){
+        gameOverDiv.textContent = "Game Over: Better Luck Next Time!"
+        playerWins = 0;
+        playerLosses = 0;
+        playerTies =0;
+    }else{
+        gameOverDiv.textContent = ""
+    }
+    
+}
